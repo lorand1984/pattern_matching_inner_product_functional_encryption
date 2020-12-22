@@ -1,4 +1,4 @@
-# pattern matching with functional encryption
+# pattern matching evaluations with functional encryption
 
 This project develops an example of pattern matching with functional encryption. A finite automata is employed as algorithm for pattern searching.
 A client encrypts pattern and text and sends out to the decryptor the crypted information. Then it ouputs the matches and send back them to the client.
