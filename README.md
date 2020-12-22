@@ -16,7 +16,6 @@ The functional encryption library is [Gofe](https://github.com/fentec-project/go
 - PatternMatching.go: it contains the FHIPE schema, retrieves pattern and text matrices for the encryption and decryption task.   
 
 ## ISSUES
-- check if any solutions exist in letterature, otherwise optimize/replace the current pattern searching algorithm, like with a suffix tree.
-- try other schemes.  
+- With the current inner product encrption schema encryption and decryption time is too slow for long texts. Possible Solutions : - Check if other solutions exist in letterature in searchable encryption field, optimize/replace the current pattern searching algorithm, like with a suffix tree or try with another inner product schema.  
 
 
