@@ -12,8 +12,8 @@ The functional encryption library is [Gofe](https://github.com/fentec-project/go
 ![](./pattern_matching.png) 
 
 ## Files
-- PatternMatching.py it is a workaround file for creating matrices of text and pattern that are used by the functional encryption application. 
-- PatternMatching.go: it contains the FHIPE schema, retrieves pattern and text matrices for the encryption and decryption task.   
+- [PatternMatching.py](./PatternMatching.py): it is a workaround file for creating matrices of text and pattern that are used by the functional encryption application. 
+- [PatternMatching.go](./PatternMatching.go): it contains the FHIPE schema, retrieves pattern and text matrices for the encryption and decryption task.   
 
 ## ISSUES
 * With the current inner product encrption schema the encryption and decryption time is too slow for long texts. Possible Solutions are: 
