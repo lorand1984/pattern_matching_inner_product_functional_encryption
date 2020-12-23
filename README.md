@@ -1,7 +1,7 @@
 # pattern matching evaluations with functional encryption
 
 This project develops an example of pattern matching with functional encryption. A finite automata is employed as algorithm for pattern searching.
-A client encrypts pattern and text and sends out to the decryptor the crypted information. Then it ouputs the matches and send back them to the client.
+A client encrypts pattern and text and sends them out to the decryptor. Then it ouputs the matches and send them back to the client.
 
 The adopted schema is [FHIPE](https://eprint.iacr.org/2016/440.pdf) (Function Hiding Inner Product Encryption), since it permits of encrpypting both text and pattern. 
 The functional encryption library is [Gofe](https://github.com/fentec-project/gofe).
