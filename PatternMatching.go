@@ -37,16 +37,15 @@ func main() {
 
 	//Create key/cipher the pattern matrix
 	var feKeyFHIPEs []*fullysec.FHIPEDerivedKey
-	if string(mod[1]) != "encr_batch"{
-		feKeyFHIPEs = deriveKeyEncryptPattern(y, trustedEntFHIPE, mskFHIPE)
-	}
 
+	if string(mod[1]) != "encr_batch"{
+		feKeyFHIPEs = deriveKeyPattern(y, trustedEntFHIPE, mskFHIPE)
+	}
 	//cipher the txt matrix
 	cipherFHIPEs:= encryptText(x, trustedEntFHIPE, mskFHIPE, start)
-
 	// Decrypt data end find the pattern:
 	if string(mod[1]) != "encr_batch"{
-		decryptionFindPattern(trustedEntFHIPE, x, cipherFHIPEs, feKeyFHIPEs, y)
+		decryptionFindPattern(trustedEntFHIPE, x, cipherFHIPEs, feKeyFHIPEs, y, start)
 	}
 }
 
@@ -65,7 +64,7 @@ func encryptText(x data.Matrix, trustedEntFHIPE *fullysec.FHIPE, mskFHIPE *fully
 	// Formatted string, such as "2h3m0.5s" or "4.503μs"
 	fmt.Println("Encryption time: ", durationEncryption)
 
-	//Write duration to a file
+	//Write duration on a file
 	writeTimeOnFile(durationEncryption, "test/EncrTime.txt", start)
 	return cipherFHIPEs
 }
@@ -87,7 +86,6 @@ func writeTimeOnFile(durationEncryption time.Duration, fileName string, start st
 			os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	}
 
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -99,22 +97,28 @@ func writeTimeOnFile(durationEncryption time.Duration, fileName string, start st
 	}
 }
 
-func decryptionFindPattern(trustedEntFHIPE *fullysec.FHIPE, x data.Matrix, cipherFHIPEs []*fullysec.FHIPECipher, feKeyFHIPEs []*fullysec.FHIPEDerivedKey, y data.Matrix) {
+func decryptionFindPattern(trustedEntFHIPE *fullysec.FHIPE, x data.Matrix, cipherFHIPEs []*fullysec.FHIPECipher, feKeyFHIPEs []*fullysec.FHIPEDerivedKey, y data.Matrix, start string) {
 	decFHIPE := fullysec.NewFHIPEFromParams(trustedEntFHIPE.Params)
 	var state int64
 	state = 0
+	startFindAllPatterns := time.Now()
 
 	for i := 0; i < x.Rows(); i++ {
 		decryptedState, _ := decFHIPE.Decrypt(cipherFHIPEs[i], feKeyFHIPEs[state])
 		state = decryptedState.Int64()
 
 		if state == int64(y.Rows()-1) {
-			print("Pattern found\n")
+			fmt.Println("Pattern found")
 		}
 	}
+	durationFindAllPatterns := time.Since(startFindAllPatterns)
+	fmt.Println("Found all patterns time: ", durationFindAllPatterns)
+
+	//Write duration to a file
+	writeTimeOnFile(durationFindAllPatterns, "test/DecrTime.txt", start)
 }
 
-func deriveKeyEncryptPattern(y data.Matrix, trustedEntFHIPE *fullysec.FHIPE, mskFHIPE *fullysec.FHIPESecKey) []*fullysec.FHIPEDerivedKey {
+func deriveKeyPattern(y data.Matrix, trustedEntFHIPE *fullysec.FHIPE, mskFHIPE *fullysec.FHIPESecKey) []*fullysec.FHIPEDerivedKey {
 	startDeriveKey := time.Now()
 	feKeyFHIPEs := make([]*fullysec.FHIPEDerivedKey, y.Rows())
 
